@@ -19,12 +19,18 @@ const app = express();
 dotenv.config({path : "./config/config.env"});
 console.log(process.env.PORT);
 app.use(cors({
-origin : [
-    // process.env.MONGO_URI,
-    process.env.PORTFOLIO_URL,
-    process.env.DASHBOARD_URL,
-    
-],
+    origin: (origin, callback) => {
+        const allowedOrigins = [
+          process.env.PORTFOLIO_URL,
+          process.env.DASHBOARD_URL
+        ];
+        
+        if (allowedOrigins.includes(origin) || !origin) {
+          callback(null, true);
+        } else {
+          callback(new Error('Not allowed by CORS'));
+        }
+      },
 methods : ["GET", "POST", "DELETE", "PUT"],
 credentials: true,
 
