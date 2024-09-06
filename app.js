@@ -21,6 +21,7 @@ console.log(process.env.PORT);
 app.use(cors({
     origin: (origin, callback) => {
         const allowedOrigins = [
+            'http://localhost:5173',
           process.env.PORTFOLIO_URL,
           process.env.DASHBOARD_URL
         ];
