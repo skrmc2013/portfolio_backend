@@ -13,7 +13,7 @@ export const addApps = catchAsyncErrors(async (req, res, next) => {
     const { title, library, iconType, fa, custom, displayLocations } = req.body;
     console.log("request body data:", req.body);
     console.log("request files data:", req.files);
-    // Validate required fields
+    
     // if (!title) {
     //     return next(new ErrorHandler("Application title is required", 400));
     // }
@@ -21,10 +21,10 @@ export const addApps = catchAsyncErrors(async (req, res, next) => {
         return next(new ErrorHandler("Library, icon type, and display locations are required", 400));
     }
 
-    // Handle different types of icons
+   
     let svgData = {};
     if (svg) {
-        // Upload to Cloudinary
+        
         const cloudinaryResponse = await cloudinary.uploader.upload(
             svg.tempFilePath,
             {
@@ -50,7 +50,7 @@ export const addApps = catchAsyncErrors(async (req, res, next) => {
     const customData = custom ? JSON.parse(custom) : {};
 console.log("request body data:", req.body);
 
-    // Create app icon entry
+   
     const appsicon = await appsIcons.create({
         title,
         library,
@@ -58,7 +58,7 @@ console.log("request body data:", req.body);
         svg: svgData,
         fa: faData,
         custom: customData,
-        displayLocations: JSON.parse(displayLocations), // Changed to plural form
+        displayLocations: JSON.parse(displayLocations), 
     });
 
     console.log("Submitted data:", appsicon);
@@ -84,12 +84,11 @@ export const deleteApps = catchAsyncErrors(async (req, res, next) => {
         return next(new ErrorHandler("App icon not found", 404));
     }
 
-    // Delete the icon from Cloudinary
+   
     if (appsicon.svg && appsicon.svg.public_id) {
         await cloudinary.uploader.destroy(appsicon.svg.public_id);
     }
 
-    // Delete the icon from the database
     await appsIcons.findByIdAndDelete(id);
 
     res.status(200).json({
@@ -111,10 +110,10 @@ export const getAllApps = catchAsyncErrors(async (req, res, next) => {
 
 
 export const getUpdateApps = catchAsyncErrors(async (req, res, next) => {
-    const { id } = req.params; // Assuming the ID is passed in the URL parameters
+    const { id } = req.params; 
     const { title, library, iconType, fa, custom, displayLocations } = req.body;
 
-    // Validate required fields
+  
     if (!id) {
         return next(new ErrorHandler("App ID is required", 400));
     }
@@ -122,7 +121,6 @@ export const getUpdateApps = catchAsyncErrors(async (req, res, next) => {
         return next(new ErrorHandler("Title, library, icon type, and display locations are required", 400));
     }
 
-    // Ensure displayLocations is an object
     let displayLocationsData;
     try {
         displayLocationsData = JSON.parse(displayLocations);
@@ -133,7 +131,7 @@ export const getUpdateApps = catchAsyncErrors(async (req, res, next) => {
         return next(new ErrorHandler("Invalid displayLocations format", 400));
     }
 
-    // Update the app icon entry
+  
     const updatedApp = await appsIcons.findByIdAndUpdate(
         id,
         {
@@ -144,7 +142,7 @@ export const getUpdateApps = catchAsyncErrors(async (req, res, next) => {
             custom: custom ? JSON.parse(custom) : {},
             displayLocations: displayLocationsData
         },
-        { new: true } // Return the updated document
+        { new: true } 
     );
 
     if (!updatedApp) {

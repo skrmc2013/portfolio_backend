@@ -65,6 +65,7 @@ export const createBlogPost = catchAsyncErrors(async (req, res, next) => {
 
     // Determine whether it's an admin/registered user or a guest author
     let authorData = {};
+    console.log(req.user)
     if (req.user) {
         authorData = { author: req.user._id, guestAuthor: null };
     } else if (req.body.guestAuthorId) {

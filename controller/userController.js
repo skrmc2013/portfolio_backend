@@ -56,6 +56,7 @@ export const register = catchAsyncErrors(async (req, res, next) => {
         twitterURL,
         replitURL,
         telegramURL,
+        resumeURL,
        stackoverflowURL,
 
     } = req.body;
@@ -76,6 +77,7 @@ export const register = catchAsyncErrors(async (req, res, next) => {
         twitterURL,
         replitURL,
         telegramURL,
+        resumeURL,
        stackoverflowURL,
         avatar: {
             public_id: cloudinaryResponseForAvatar.public_id,
@@ -159,6 +161,7 @@ export const updateProfile = catchAsyncErrors(async (req, res, next) => {
        stackoverflowURL : req.body.stackoverflowURL,
        experience: req.body.experience,
        support   : req.body.support ,
+       resumeURL : req.body.resumeURL,
 
     };
     if (req.files && req.files.avatar) {

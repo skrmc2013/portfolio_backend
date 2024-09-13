@@ -61,6 +61,7 @@ const userSchema = new mongoose.Schema({
     },
 
     githubURL: String,
+    resumeURL: String,
     facebookURL:String,
     whatsappURL:String,
     linkedInURL:String,

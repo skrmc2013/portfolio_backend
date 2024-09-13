@@ -13,6 +13,8 @@ import skillRouter from "./router/skillRoutes.js";
 import projectRouter from "./router/projectRoutes.js";
 import teamMemberRouter from "./router/TeamRoutes.js";
 import blogPostRouter from "./router/blogRouter.js";
+import commentRouter from "./router/commentRoutes.js";
+import certificationRouter from "./router/certificationRouter.js";
 
 const app = express();
 
@@ -46,6 +48,9 @@ app.use("/api/v1/skills", skillRouter);
 app.use("/api/v1/project", projectRouter);
 app.use("/api/v1/member", teamMemberRouter);
 app.use("/api/v1/blogs", blogPostRouter);
+// app.use("/api/comments", commentRouter);
+app.use("/api", commentRouter);
+app.use("/api/certify", certificationRouter);
 
 
 

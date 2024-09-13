@@ -9,7 +9,7 @@ import { addComment, addReply, deleteComment, deleteReply, updateComment, update
 
 const router = express.Router();
 
-router.post("/addblogpost",  createBlogPost);
+router.post("/addblogpost",isAuthenticated, createBlogPost);
 router.get("/getallblogs",  getAllBlogPosts);
 router.put("/updateblogpost/:id",  updateBlogPost);
 router.put("/updateblogview/:id", updateBlogView);
@@ -32,6 +32,7 @@ router.get("/getsingleguestwithblogs/:id",   getSingleGuestAuthorWithBlogs);
 
 // router for comment
 router.post("/addcomment/:id",  addComment); 
+
 router.put("/updatecomment/:id",  updateComment); 
 router.delete("/deletecomment/:id",  deleteComment); 
 
