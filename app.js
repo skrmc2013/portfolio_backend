@@ -23,6 +23,8 @@ console.log(process.env.PORT);
 app.use(cors({
 origin : [
     // process.env.MONGO_URI,
+    process.env.LOCAL_URL,
+    process.env.LOCALDASHBOARD_URL,
     process.env.PORTFOLIO_URL,
     process.env.DASHBOARD_URL,
     
