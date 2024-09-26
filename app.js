@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import fileUpload from "express-fileupload";
+import prerender from 'prerender-node';
+
 import dbConnection from "./database/dbConnection.js";
 import { errorMiddleware } from "./middlewares/error.js";
 import messageRouter from "./router/messageRouter.js";
@@ -15,6 +17,12 @@ import teamMemberRouter from "./router/TeamRoutes.js";
 import blogPostRouter from "./router/blogRouter.js";
 import commentRouter from "./router/commentRoutes.js";
 import certificationRouter from "./router/certificationRouter.js";
+import seoRouter from "./router/seoRoutes.js";
+import cron from 'node-cron';
+import generateSitemap from "./controller/sitemapController.js";
+// import generateSitemap from './controllers/sitemapController.js';
+
+
 
 const app = express();
 
@@ -42,6 +50,8 @@ app.use(fileUpload({
     tempFileDir : "/tmp/",
 }));
 
+app.use(prerender.set('prerenderToken', process.env.PRERENDER_TOKEN));
+
 app.use("/api/v1/message", messageRouter);
 app.use("/api/v1/admin", userRouter);
 app.use("/api/v1/timeline",timelineRouter );
@@ -54,10 +64,14 @@ app.use("/api/v1/blogs", blogPostRouter);
 app.use("/api", commentRouter);
 app.use("/api/certify", certificationRouter);
 
-
+app.use("/", seoRouter);  
 
 app.use(errorMiddleware);
 dbConnection();
 
+cron.schedule('0 0 * * *', async () => {
+    console.log('Generating sitemap...');
+    await generateSitemap();
+  });
 
 export default app;

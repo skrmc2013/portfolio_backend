@@ -105,9 +105,7 @@ export const updateBlogPost = catchAsyncErrors(async (req, res, next) => {
     // Find the blog post by ID
     const blogpost = await BlogPost.findById(id);
 
-    if (!blogpost) {
-        return next(new ErrorHandler("Blog post not found", 404));
-    }
+   
 
     // Validation checks
     if (!title) return next(new ErrorHandler("Title is required", 400));
@@ -172,35 +170,53 @@ export const updateBlogPost = catchAsyncErrors(async (req, res, next) => {
 
     // Determine whether it's an admin/registered user or a guest author
     let authorData = {};
+    console.log(req.user)
     if (req.user) {
         authorData = { author: req.user._id, guestAuthor: null };
     } else if (req.body.guestAuthorId) {
         authorData = { author: null, guestAuthor: req.body.guestAuthorId };
-    } else {
+    } 
+    else {
         return next(new ErrorHandler("Author or Guest Author is required", 400));
     }
 
     // Update blog post fields
-    blogpost.title = title;
-    blogpost.slug = slug;
-    blogpost.content = content;
-    blogpost.excerpt = excerpt;
-    blogpost.categories = categories;
-    blogpost.tags = tagsData;
-    blogpost.published = published;
-    blogpost.seo = seoData;
-    blogpost.status = status;
-    blogpost.coverImage = coverImageData;
-    blogpost.author = authorData.author;
-    blogpost.guestAuthor = authorData.guestAuthor;
-
+    // blogpost.title = title;
+    // blogpost.slug = slug;
+    // blogpost.content = content;
+    // blogpost.excerpt = excerpt;
+    // blogpost.categories = categories;
+    // blogpost.tags = tagsData;
+    // blogpost.published = published;
+    // blogpost.seo = seoData;
+    // blogpost.status = status;
+    // blogpost.coverImage = coverImageData;
+    // ...authorData;
+    // blogpost.author = authorData.author;
+    // blogpost.guestAuthor = authorData.guestAuthor;
+    const updateblogpost = await BlogPost.findByIdAndUpdate(id, {
+        title,
+        slug,
+        content,
+        excerpt,
+        categories,
+        tags: tagsData,
+        published,
+        seo: seoData,
+        status,
+        coverImage: coverImageData,
+        ...authorData,
+    });
+    if (!updateblogpost) {
+        return next(new ErrorHandler("Blog post not found", 404));
+    }
     // Save the updated blog post
-    await blogpost.save();
+    // await blogpost.save();
 
     res.status(200).json({
         success: true,
         message: "Blog post updated successfully",
-        blogpost,
+        updateblogpost,
     });
 });
 

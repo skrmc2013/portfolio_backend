@@ -32,6 +32,14 @@ if (logoURL) {
         return next(new ErrorHandler(e, 500));
     }
 }
+const splitSkills={};
+// Check if associatedSkills is a string before splitting
+if (typeof associatedSkills === 'string') {
+     splitSkills = associatedSkills.split(',').map(skill => skill.trim());
+  
+} else {
+    console.error("associatedSkills is not a string, received:", associatedSkills);
+}
 
     const newCertification = await Certification.create({
       title,
@@ -40,7 +48,7 @@ if (logoURL) {
       expirationDate,
       credentialID,
       credentialURL,
-      associatedSkills,
+      associatedSkills:splitSkills,
       description,
       logoURL:logoCertificationData,
     });

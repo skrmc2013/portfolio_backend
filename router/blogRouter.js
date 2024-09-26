@@ -11,12 +11,12 @@ const router = express.Router();
 
 router.post("/addblogpost",isAuthenticated, createBlogPost);
 router.get("/getallblogs",  getAllBlogPosts);
-router.put("/updateblogpost/:id",  updateBlogPost);
+router.put("/updateblogpost/:id",isAuthenticated,  updateBlogPost);
 router.put("/updateblogview/:id", updateBlogView);
 router.put("/updatebloglike/:id", updateBlogLike);
 router.delete("/deleteblogpost/:id",  deleteBlogPost);
 router.get("/getblogpost/:id",  getBlogPost);
-router.get("/getsingleblogwithslug/:slug",getBlogPostWithSlug  );
+router.get("/getsingleblogwithslug/:slug",getBlogPostWithSlug );
 
 // router.delete("/deleteapps/:id", isAuthenticated, deleteApps);
 // router.get("/getallapps", getAllApps);
